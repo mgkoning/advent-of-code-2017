@@ -18,14 +18,14 @@ howLong = do
   if (secondsLeft < 0) then do
     putStrLn "It has started!"
   else do
-    putStrLn ((show $ timeParts secondsLeft) ++ " left.")
+    putStrLn $ (show $ timeParts secondsLeft) ++ " left."
   where
     timeLeft = diffUTCTime startTime
     startTime = zonedTimeToUTC $ ZonedTime (LocalTime dec1 midnight) est
     dec1 = fromGregorian 2017 12 1
     est = TimeZone (-5*60) False "EST"
     timeParts timeDiff = TimeParts
-      {hours = rem (quot timeDiff (60*60)) 60,
+      {hours = quot timeDiff (60*60),
        minutes = rem (quot timeDiff 60) 60,
        seconds = rem timeDiff 60}
 
