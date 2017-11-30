@@ -1,6 +1,5 @@
 import Data.Time.Calendar
 import Data.Time.Clock
-import Data.Time.Clock.System
 import Data.Time.LocalTime
 
 take5 x = take 5 x [] where
