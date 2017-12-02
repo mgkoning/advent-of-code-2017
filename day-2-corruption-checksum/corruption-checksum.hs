@@ -15,11 +15,7 @@ spreadsheetContents contents = map ((map read) . words) (lines contents)
 
 minMaxChecksummer :: [Int] -> Int
 minMaxChecksummer [] = error "No row contents"
-minMaxChecksummer (x:xs) = maxCell - minCell
-  where
-    (minCell, maxCell) = foldl minMaxChecksummer' (x, x) xs
-    minMaxChecksummer' :: (Int, Int) -> Int -> (Int, Int)
-    minMaxChecksummer' (minCell, maxCell) cell = (min minCell cell, max maxCell cell)
+minMaxChecksummer xs = let sorted = sort xs in (last sorted) - (head sorted)
 
 divisibleChecksummer :: [Int] -> Int
 divisibleChecksummer [] = error "Not enough values"
