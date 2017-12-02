@@ -8,7 +8,7 @@ solution = do
     putStrLn $ "Solution part 2: " ++ (show $ checksum divisibleChecksummer contents)
 
 checksum :: ([Int] -> Int) -> String -> Int
-checksum rowChecksummer contents = foldl1 (+) $ map rowChecksummer $ spreadsheetContents contents
+checksum rowChecksummer contents = sum $ map rowChecksummer $ spreadsheetContents contents
 
 spreadsheetContents :: String -> [[Int]]
 spreadsheetContents contents = map ((map read) . words) (lines contents)

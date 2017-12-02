@@ -21,7 +21,7 @@ solveCaptcha2 list = solveCaptcha2' fullList 0 0
     solveCaptcha2' (x:xs) n index = solveCaptcha2' xs (n + addition) (index + 1)
       where addition = if x == fullList !! (rem (index + offsetToLookAt) captchaLength) then x else 0
 
-solveCaptchaZip offset xs = foldl1 (+) $ map firstIfSame $ zip list $ rotate offset list
+solveCaptchaZip offset xs = sum $ map firstIfSame $ zip list $ rotate offset list
   where
     firstIfSame (x, y) = if x == y then x else 0
     list = map digitToInt xs
