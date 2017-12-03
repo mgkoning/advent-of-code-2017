@@ -1,16 +1,23 @@
 import Data.List
 import Data.Maybe
 
+-- Manhattan distance to origin for the given grid 'index'. Calculates coordinates for index and takes absolute
+-- value of both components.
 distance :: Int -> Int
 distance n = (abs x) + (abs y)
   where
     (x, y) = coordinates n
 
+-- Returns coordinates on the grid based on the (1-based) index given, where 1 equals (0, 0)
+-- and the grid spirals counterclockwise.
 coordinates :: Int -> (Int, Int)
 coordinates n
   | n == 1 = (0, 0)
   | otherwise = (x, y)
     where
+      -- Root calculation is done because the bottom right value of every square in the spiral is
+      -- always second power of an odd number (1, 9, 25, ...). This gives a good start point for
+      -- the search: the actual 'square' in the spiral can be determined this way.
       nextRoot = ceiling $ sqrt $ fromIntegral n
       nextOddRoot = if rem nextRoot 2 == 0 then nextRoot + 1 else nextRoot
       (x, y) = determineCoordinates nextOddRoot n
@@ -27,9 +34,14 @@ determineCoordinates nextOddRoot n
     topLeftCoordinates = (snd bottomRightCoordinates, fst bottomRightCoordinates)
     diff = n - ((nextOddRoot-2) ^ 2)
 
+-- Walks through all values generated in the grid to find the first one larger than n.
 firstNumGreaterThan :: Int -> Int
 firstNumGreaterThan n = firstNumGreaterThan' n 2 [((0,0),1)]
   where
+    -- Helper function that recursively accumulates all calculations into a list of known values.
+    -- Not very efficient, as half of the neighbors probably aren't in the list; calculating which
+    -- neighbors won't exist in the list should be doable, but not needed on puzzle input.
+    firstNumGreaterThan' :: Int -> Int -> [((Int, Int), Int)] -> Int
     firstNumGreaterThan' n current soFar
       | valueForCurrent > n = valueForCurrent
       | otherwise = firstNumGreaterThan' n (current + 1) $ (currentCoordinates, valueForCurrent) : soFar
@@ -39,8 +51,14 @@ firstNumGreaterThan n = firstNumGreaterThan' n 2 [((0,0),1)]
         getNeighborValue :: [((Int, Int), Int)] -> (Int, Int) -> Int
         getNeighborValue soFar neighbor = sum $ map snd $ maybeToList $ find (\x -> neighbor == fst x) soFar
 
+-- getNeighbors returns all neighbors of the given coordinate.
 getNeighbors :: (Int, Int) -> [(Int, Int)]
-getNeighbors (x, y) = [(x + dx, y + dy) | dx <- [-1..1], dy <- [-1..1], (x + dx, y + dy) /= (x,y)]
+getNeighbors (x, y) = [(x', y')
+  | dx <- [-1..1],
+    dy <- [-1..1],
+    let (x', y') = (x + dx, y + dy),
+    (x', y') /= (x, y) -- do not return input as neighbor
+  ]
 
 solution = do
     putStrLn "Test inputs (part 1):"
