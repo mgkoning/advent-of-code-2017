@@ -36,13 +36,13 @@ determineCoordinates nextOddRoot n
     diff = n - ((nextOddRoot-2) ^ 2)
 
 -- Walks through all values generated in the grid to find the first one larger than n.
-firstNumGreaterThan :: Integer -> Integer
+firstNumGreaterThan :: Integer -> (Integer, (Integer, Integer))
 firstNumGreaterThan n = firstNumGreaterThan' n 2 $ Map.singleton (0,0) 1
   where
     -- Helper function that recursively accumulates all calculations into a map of known values.
-    firstNumGreaterThan' :: Integer -> Integer -> Map.Map (Integer, Integer) Integer -> Integer
+    firstNumGreaterThan' :: Integer -> Integer -> Map.Map (Integer, Integer) Integer -> (Integer, (Integer, Integer))
     firstNumGreaterThan' n current soFar
-      | valueForCurrent > n = valueForCurrent
+      | valueForCurrent > n = (valueForCurrent, currentCoordinates)
       | otherwise = firstNumGreaterThan' n (current + 1) $ Map.insert currentCoordinates valueForCurrent soFar
       where
         currentCoordinates = coordinates current
@@ -65,9 +65,10 @@ solution = do
     putStrLn $ (++) "12: " $ show $ distance 12
     putStrLn $ (++) "23: " $ show $ distance 23
     putStrLn $ (++) "1024: " $ show $ distance 1024
-    putStrLn ""
-    putStrLn "Part 1:"
+    putStrLn "\nPart 1:"
     putStrLn $ (++) "325489: " $ show $ distance 325489
-    putStrLn ""
-    putStrLn "Part 2:"
-    putStrLn $ show $ firstNumGreaterThan $ 325489
+    putStrLn "\nPart 2:"
+    putStrLn $ show $ fst $ firstNumGreaterThan $ 325489
+    putStrLn $ "\nBonus (big numbers):"
+    putStrLn $ show $ firstNumGreaterThan $ 4567476145634564545645454562348890634324235432482375348957893473896789576897548967453768457689745893678934576897458968945768945768974589768945768934576897456789345892739587727658746235786234785678346578346257863478563465786347856783465723479582389048238189
+    
