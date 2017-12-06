@@ -10,6 +10,11 @@ testInput = [0, 2, 7, 0]
 detectLoop :: [Int] ->  (Int, ([Int], Int))
 detectLoop = detectLoop' 0 Map.empty
   where
+    {- 
+      Actual worker function. Fills a map with the state of the banks plus the step index.
+      The map is keyed by the value of the first bank and contains all memory states that have
+      the same value for the first bank. Step index is stored for ease of calculation at the end.
+    -}
     detectLoop' :: Int -> Map.Map Int [([Int], Int)] -> [Int] -> (Int, ([Int], Int))
     detectLoop' steps cache banks
       | Map.member firstBank cache && not (null foundBanks) = (steps, head foundBanks)
@@ -19,6 +24,10 @@ detectLoop = detectLoop' 0 Map.empty
         firstBank = head banks
         newBanks = updateBanks banks
 
+{-
+  Determines the new state for the banks. First, determine the maximum value (first one wins).
+  Set that index to zero, then add the redivided value to all positions.
+-}
 updateBanks :: [Int] -> [Int]
 updateBanks banks = zipWith (+) banksWithoutMax redivided
   where
@@ -38,6 +47,10 @@ firstMaximum (a1, b1) (a2, b2)
 rotateRight :: Int -> [a] -> [a]
 rotateRight n x = drop (length x - n) x ++ take (length x - n) x
 
+{-
+  Distributes val over a list of length len. Every position gets val `quot` len (integer division).
+  The first r indices then get 1 extra, where r = val `rem` len (remainder).
+-}
 distribute :: Int -> Int -> [Int]
 distribute val len = zipWith (+) (replicate len q) $ (replicate r 1) ++ (replicate (len-r) 0)
   where
