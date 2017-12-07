@@ -8,7 +8,7 @@ readInput input = [(name, weight, supported) |
     line <- wordsByLine,
     let name = head line,
     let weight = read $ takeWhile (/=')') $ dropWhile (=='(') $ head $ tail line,
-    let supported = map (takeWhile (/=',')) $ dropWhile (=="->") $ dropWhile (/="->") line]
+    let supported = map (takeWhile (/=',')) $ drop 1 $ dropWhile (/="->") line]
   where
     wordsByLine = map words $ lines input
 
