@@ -1,8 +1,5 @@
 data Mode = Group | Garbage | Cancel deriving Show
 
-isCancel Cancel = True
-isCancel _ = False
-
 score :: String -> (Int, Int, Int, [Mode])
 score input = foldl readForScore (1, 1, 0, [Group]) (tail input)
   where
