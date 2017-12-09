@@ -3,7 +3,6 @@ data Mode = Group | Garbage | Cancel deriving Show
 isCancel Cancel = True
 isCancel _ = False
 
-
 score :: String -> (Int, Int, Int, [Mode])
 score input = foldl readForScore (1, 1, 0, [Group]) (tail input)
   where
@@ -17,7 +16,7 @@ score input = foldl readForScore (1, 1, 0, [Group]) (tail input)
         Group -> case next of
           '<' -> (score, level, garbageCount, Garbage:modes)
           '}' -> (score, level - 1, garbageCount, tail modes)
-          '{' -> (score + level + 1, level + 1, garbageCount, Group:modes)
+          '{' -> let nextLevel = level + 1 in (score + nextLevel, nextLevel, garbageCount, Group:modes)
           _ -> (score, level, garbageCount, modes)
 
 solve = do
