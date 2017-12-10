@@ -9,9 +9,6 @@ puzzleInput = "230,1,2,221,97,252,168,169,57,99,0,254,181,255,235,167"
 inputAsInts :: [Int]
 inputAsInts = map read $ splitOn "," puzzleInput
 
-inputAsAscii :: [Int]
-inputAsAscii = map ord $ puzzleInput
-
 transformations :: [Int] -> [(Int, Int)]
 transformations input = zip input [0..]
 
@@ -19,8 +16,7 @@ tieKnot :: [Int] -> (Int, Int) -> [Int]
 tieKnot state (stepLength, skipSize) =
   let
     transform = (reverse $ take stepLength state) ++ drop stepLength state
-    shift = rotateLeft (stepLength + skipSize) transform
-  in shift
+  in rotateLeft (stepLength + skipSize) transform
 
 rotateLeft :: Int -> [Int] -> [Int]
 rotateLeft n xs = take (length xs) $ drop n (cycle xs)
@@ -43,11 +39,13 @@ knotHashPart2 input =
 showHash :: [Int] -> String
 showHash = concat . (map (reverse . (take 2) . reverse . ("00"++) . (`showHex` "")))
 
+knotHashFromString :: String -> String
+knotHashFromString = showHash . knotHashPart2 . (map ord)
+
 solve = do
   let hash = knotHash inputAsInts
   putStrLn "Part 1:"
   putStrLn $ show $ product $ take 2 hash
 
   putStrLn "\nPart 2:"
-  let hash2 = knotHashPart2 inputAsAscii
-  putStrLn $ showHash hash2
+  putStrLn $ knotHashFromString puzzleInput
