@@ -10,9 +10,7 @@ puzzleInput = "230,1,2,221,97,252,168,169,57,99,0,254,181,255,235,167"
 inputAsInts :: [Int]
 inputAsInts = map read $ splitOn "," puzzleInput
 
-{-
-  Makes list of lengths into a list of lengths with skip sizes.
--}
+-- Makes a list of lengths into a list of lengths with skip sizes.
 transformations :: [Int] -> [(Int, Int)]
 transformations input = zip input [0..]
 
@@ -60,7 +58,7 @@ knotHashPart2 input =
 
 -- Hex representation of hash.
 showHash :: [Int] -> String
-showHash = concat . (map (reverse . (take 2) . reverse . ("00"++) . (`showHex` "")))
+showHash = concat . (map (reverse . (take 2) . reverse . ('0':) . (`showHex` "")))
 
 -- Helper function to do allow calculating straight from string.
 knotHashFromString :: String -> String
