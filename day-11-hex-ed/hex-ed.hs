@@ -12,8 +12,8 @@ import Data.List.Split
 addTripel :: (Int, Int, Int) -> (Int, Int, Int) -> (Int, Int, Int)
 addTripel (a, b, c) (d, e, f) = (a+d, b+e, c+f)
 
-hammingDistance :: (Int, Int, Int) -> Int
-hammingDistance (x, y, z) = (abs x + abs y + abs z) `quot` 2
+distanceToOrigin :: (Int, Int, Int) -> Int
+distanceToOrigin (x, y, z) = (abs x + abs y + abs z) `quot` 2
 
 hexDirection :: String -> (Int, Int, Int)
 hexDirection s =
@@ -26,10 +26,10 @@ hexDirection s =
     "nw" -> (-1,  1,  0)
 
 distance :: String -> Int
-distance = hammingDistance . foldl1' addTripel . map hexDirection . splitOn ","
+distance = distanceToOrigin . foldl1' addTripel . map hexDirection . splitOn ","
 
 furthestEver :: String -> Int
-furthestEver = maximum . map hammingDistance . scanl1 addTripel . map hexDirection . splitOn ","
+furthestEver = maximum . map distanceToOrigin . scanl1 addTripel . map hexDirection . splitOn ","
 
 solve = do
   input <- readFile "input.txt"
