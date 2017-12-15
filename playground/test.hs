@@ -29,3 +29,7 @@ howLong = do
        seconds = rem timeDiff 60}
 
 
+(😡) a = error a
+
+check a =
+  if a == 0 then (😡) "argument is zero" else a
