@@ -37,9 +37,9 @@ solve = do
   -}
   let positions = scanl (\d _ -> dance d moves) initialPosition [0..]
   let cycle = initialPosition:(takeWhile (/=initialPosition) (tail positions))
-  let effectiveIndex = oNE_BILLION `rem` (length cycle)
+  let effectiveIndex = _ONE_BILLION `rem` (length cycle)
   putStrLn $ (show effectiveIndex) ++ ": " ++ (head $ drop effectiveIndex cycle)
 
-oNE_BILLION = 1000000000
+_ONE_BILLION = 1000000000
 
 testSolve = dance ['a'..'e'] ["s1", "x3/4", "pe/b"]
