@@ -18,7 +18,7 @@ doMove dancers move =
        in swap dancers a b
 
 swap :: [Char] -> Int -> Int -> [Char]
-swap dancers a b = prefix ++ (take 1 suffix) ++ (tail between) ++ (take 1 between) ++ (tail suffix)
+swap dancers a b = prefix ++ (take 1 suffix) ++ (drop 1 between) ++ (take 1 between) ++ (drop 1 suffix)
   where
     (first, last) = if a < b then (a, b) else (b, a)
     (prefix, rest) = splitAt (first) dancers
