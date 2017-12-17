@@ -37,6 +37,7 @@ solve = do
   -}
   let positions = scanl (\d _ -> dance d moves) initialPosition [0..]
   let cycle = initialPosition:(takeWhile (/=initialPosition) (tail positions))
+  putStrLn $ "Cycle length: " ++ show (length cycle)
   let effectiveIndex = _ONE_BILLION `rem` (length cycle)
   putStrLn $ (show effectiveIndex) ++ ": " ++ (head $ drop effectiveIndex cycle)
 
