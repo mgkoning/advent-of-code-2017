@@ -6,7 +6,7 @@ runSpinlock stepSize until = runSpinlock' 0 [0] [1..until]
   where
     runSpinlock' :: Int -> [Int] -> [Int] -> ([Int], Int)
     runSpinlock' p b [] = (b, p)
-    runSpinlock' p b (v:vs) = ((runSpinlock' $! newPosition) $! newBuffer) vs
+    runSpinlock' p b (v:vs) = newPosition `seq` newBuffer `seq` runSpinlock' newPosition newBuffer vs
       where
         newPosition = ((p + stepSize) `rem` (length b)) + 1
         newBuffer = insertAt newPosition v b
