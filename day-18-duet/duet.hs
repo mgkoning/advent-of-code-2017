@@ -1,5 +1,5 @@
 import Data.Char
-import Data.Map.Strict (Map, empty)
+import Data.Map.Strict (Map)
 import Data.Maybe
 import qualified Data.Map.Strict as Map
 
@@ -10,7 +10,8 @@ data State = State {
     blocked :: Bool,
     inbox :: [Int],
     sent :: Int
-  } deriving (Show)
+  }
+  deriving (Show)
 
 emptyState = State 0 [] Map.empty False [] 0
 
@@ -22,7 +23,7 @@ data Operation = Send Operand |
                  Modulo Operand Operand |
                  Receive Operand |
                  JumpGreaterZero Operand Operand
-                 deriving (Show)
+  deriving (Show)
 
 readInstruction s =
   case op of
@@ -73,7 +74,7 @@ execute i state =
       let newValue atX = let result = fromMaybe 0 atX `op` getValue y registry
                          in result `seq` Just result
       in next `seq` state { programPointer = next, registers = Map.alter newValue x registry }
-    setValue x y registry = Map.alter (\_ -> Just $ y) x registry
+    setValue x y registry = Map.alter (\_ -> Just y) x registry
 
 getValue x state =
   case x of
