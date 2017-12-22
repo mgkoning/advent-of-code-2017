@@ -41,16 +41,28 @@ burst nextState (grid, pos, dir, infCount) =
       newInfectionCount = infCount + if newState == Infected then 1 else 0
   in newInfectionCount `giev` (Map.alter (\_ -> Just newState) pos grid, newPos, newDirection, newInfectionCount)
 
-testSolve1 = foldl' (\grid _ -> burst nextStateSimple grid) (readGrid testGrid, (1,1), Up, 0) [1..70]
-testGrid = "..#\n#..\n..."
-
-runSim grid stateChange iterations = foldl' (\grid _ -> burst stateChange grid) (grid, (12,12), Up, 0) [1..iterations]
+runSim grid startPos stateChange iterations = foldl' (\grid _ -> burst stateChange grid) (grid, startPos, Up, 0) [1..iterations]
 
 solve = do
   putStrLn "Part 1:"
   fileGrid <- readGrid <$> readFile "input.txt"
-  let (part1Grid, _, _, infCount1) = runSim fileGrid nextStateSimple 10000
+  let (part1Grid, _, _, infCount1) = runSim fileGrid (12,12) nextStateSimple 10000
   putStrLn $ show $ infCount1
   putStrLn "\nPart 2:"
-  let (part2Grid, _, _, infCount2) = runSim fileGrid nextStateEvolved 10000000
+  let (part2Grid, _, _, infCount2) = runSim fileGrid (12,12) nextStateEvolved 10000000
   putStrLn $ show $ infCount2
+
+
+{- Test functions -}
+testSolve1 it = runSim (readGrid testGrid) (1,1) nextStateSimple it
+testSolve2 it = runSim (readGrid testGrid) (1,1) nextStateEvolved it
+testGrid = "..#\n#..\n..."
+
+runTests = do
+  putStrLn $ "70: " ++ (show $ testSolve1 70)
+  let (_, _, _, count1) =  testSolve1 10000
+  putStrLn $ "10000: " ++ (show count1)
+
+  putStrLn $ "100: " ++ (show $ testSolve2 100)
+  let (_, _, _, count2) =  testSolve2 10000000
+  putStrLn $ "10000000: " ++ (show count2)
