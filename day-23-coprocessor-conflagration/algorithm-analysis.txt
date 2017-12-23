@@ -1,0 +1,27 @@
+b = 99
+c = b
+if a /= 0 {
+  b = b * 100
+  b = b + 100000
+  c = b
+  c = c + 17000
+}
+# at this point: b 109900 c 126900
+do { # 1000 times
+  f = 1 # f is a flag for 'found' (being a multiplication resulting in current value for b)
+  d = 2 # first factor
+  do {
+    e = 2 # second factor
+    do {
+      if (d * e) == b {
+        f = 0 # factor found: not prime; keep burning that cpu though!
+      }
+      e = e + 1
+    } until e == b
+    d = d + 1
+  } until d == b
+  if f == 0 {
+    h = h + 1 # h counts all values for b that are not prime (i.e. two factors were found)
+  }
+  b = b + 17
+} until b == c
